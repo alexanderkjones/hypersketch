@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: "3.8"
+services:
+   frontend:
+     build:
+       context: .
+       dockerfile: Dockerfile
+     environment:
+       - WATCHPACK_POLLING=true
+     volumes:
+       - ./:/hypersketch:cached
+       - /node_modules
+     ports:
+       - 3000:3000
