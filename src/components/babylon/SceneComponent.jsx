@@ -1,7 +1,15 @@
-import { useEffect, useRef } from "react";
-import { Engine, Scene } from "@babylonjs/core";
+import { useEffect, useRef } from 'react';
+import { Engine, Scene } from '@babylonjs/core';
 
-export default ({ antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady, ...rest}) => {
+export default ({
+  antialias,
+  engineOptions,
+  adaptToDeviceRatio,
+  sceneOptions,
+  onRender,
+  onSceneReady,
+  ...rest
+}) => {
   const reactCanvas = useRef(null);
 
   // set up basic engine and scene
@@ -13,7 +21,13 @@ export default ({ antialias, engineOptions, adaptToDeviceRatio, sceneOptions, on
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight * 0.85;
 
-    const engine = new Engine(canvas, antialias, {stencil: true}, adaptToDeviceRatio);
+    const engine = new Engine(
+      canvas,
+      antialias,
+      { stencil: true },
+      adaptToDeviceRatio
+    );
+
     const scene = new Scene(engine, sceneOptions);
     if (scene.isReady()) {
       onSceneReady(scene);
@@ -22,7 +36,7 @@ export default ({ antialias, engineOptions, adaptToDeviceRatio, sceneOptions, on
     }
 
     engine.runRenderLoop(() => {
-      if (typeof onRender === "function") onRender(scene);
+      if (typeof onRender === 'function') onRender(scene, engine);
       scene.render();
     });
 
@@ -31,17 +45,24 @@ export default ({ antialias, engineOptions, adaptToDeviceRatio, sceneOptions, on
     };
 
     if (window) {
-      window.addEventListener("resize", resize);
+      window.addEventListener('resize', resize);
     }
 
     return () => {
       scene.getEngine().dispose();
 
       if (window) {
-        window.removeEventListener("resize", resize);
+        window.removeEventListener('resize', resize);
       }
     };
-  }, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady]);
+  }, [
+    antialias,
+    engineOptions,
+    adaptToDeviceRatio,
+    sceneOptions,
+    onRender,
+    onSceneReady,
+  ]);
 
   return <canvas ref={reactCanvas} {...rest} />;
 };
