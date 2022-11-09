@@ -1,4 +1,6 @@
 import { Grid } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { setFrameRate } from '../../slices/FrameRateSlice';
 import SceneComponent from '../babylon/SceneComponent';
 import SliderComponent from './SliderComponent';
 import ButtonBarComponent from './ButtonBarComponent';
@@ -7,6 +9,8 @@ import { SceneManager } from '../../babylonjs/SceneManager';
 
 const PlaygroundComponent = (props) => {
   let sceneManager = new SceneManager();
+
+  const dispatch = useDispatch();
 
   // Will execute once when scene is ready
   const onSceneReady = (scene) => {
@@ -17,6 +21,7 @@ const PlaygroundComponent = (props) => {
 
   //Will run on every frame render.  We are spinning the box on y-axis.
   const onRender = (scene, engine) => {
+    dispatch(setFrameRate(engine.getFps().toFixed()));
     //refFPS.current = engine.getFps().toFixed();
   };
 
