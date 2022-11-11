@@ -1,17 +1,32 @@
 import { PointerEventTypes } from '@babylonjs/core';
 
-export class EditorPointerObserver {
-  constructor() {
-    this._actions = actions;
+export class AddAction {
+  constructor(scene) {
+    this._scene = scene;
+    this._loader = new MeshManager();
+    this._attachedMesh = null;
     this._observer = null;
   }
 
   attachScene(scene) {
-    // TODO: remove past observer if scene changes
-    this._observer = _attachToMeshPointerObserver(scene);
+    this._scene = scene;
+    this._loader.attachScene(scene);
   }
 
-  _attachToMeshPointerObserver = (scene) => {
+  attachMesh(mesh) {
+    this._attachedMesh = mesh;
+    this._observer = _addMeshPointerObserver(this._scene);
+  }
+
+  loadMesh(url) {}
+
+  _addMeshLoader(url, scene) {
+    SceneLoader.ImportMesh('', url, null, scene, function (meshes) {
+      // do something with the scene
+    });
+  }
+
+  _addMeshPointerObserver(scene) {
     const pointerObserver = scene.onPointerObservable.add((pointerInfo) => {
       if (pointerInfo.type == BABYLON.PointerEventTypes.POINTERDOWN) {
         if (pointerInfo.pickInfo && pointerInfo.pickInfo.pickedMesh) {
@@ -34,5 +49,9 @@ export class EditorPointerObserver {
     });
 
     return pointerObserver;
-  };
+  }
+
+  dispose() {
+    this._attachedMesh = null;
+  }
 }
