@@ -1,0 +1,25 @@
+{
+  "extrusion-vslot-40x40": {
+    "id": "m8yE9k",
+    "url": "./extrusions/vslot/extrusions-vslot-40x40.gbl",
+    "material": "aluminum-extrusion-6061"
+  },
+
+  "plate-6mm-aluminum-6061": {
+    "id": "XOFKRs",
+    "url": null,
+    "material": "aluminum-6061",
+    "create": {
+      "box": [0.1, 0.1, 0.006]
+    }
+  },
+
+  "bar-6mm-aluminum-6061": {
+    "id": "81NtTY",
+    "url": null,
+    "material": "aluminum-6061",
+    "create": {
+      "box": [0.1, 0.006, 0.006]
+    }
+  }
+}

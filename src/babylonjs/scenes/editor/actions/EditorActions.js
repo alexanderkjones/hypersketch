@@ -5,8 +5,9 @@ import { RotateAction } from './RotateAction';
 import { JointAction } from './JointAction';
 
 export class EditorActions {
-  constructor(scene=null) {
-    this._scene = scene;
+  constructor(loader) {
+    this._scene = null;
+    this._loader = loader;
     this._attachedMesh = null;
     this.state = {
       action: null,
@@ -144,12 +145,12 @@ export class EditorActions {
     }
   }
 
-  set addActionEnabled(value, url) {
+  set addActionEnabled(value, toLoad) {
     if (value) {
       if(!this.actions.add) {
         this.actions.add = new AddAction(this._scene);
       }
-      this._attachedMesh = this.actions.add.loadMesh(url);
+      this._attachedMesh = this._loader.loadMesh(toLoad);
       if(this._attachedMesh){
         this.actions.add.attachMesh(this._attachedMesh);
       }

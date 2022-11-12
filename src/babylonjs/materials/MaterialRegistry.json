@@ -1,0 +1,19 @@
+{
+  "aluminum-extrusion-6061": {
+    "type": "PBRMetallicRoughness",
+    "settings": {
+      "baseColor": "#4D4D4D",
+      "metallic": 0.8,
+      "roughness": 0.2
+    }
+  },
+
+  "aluminum-6061": {
+    "type": "PBRMetallicRoughness",
+    "settings": {
+      "baseColor": "#4D4D4D",
+      "metallic": 0.8,
+      "roughness": 0.2
+    }
+  }
+}

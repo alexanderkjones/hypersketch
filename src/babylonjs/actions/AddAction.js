@@ -1,9 +1,8 @@
-import { PointerEventTypes } from '@babylonjs/core';
+import { Vector3, Matrix, PointerEventTypes } from "@babylonjs/core";
 
 export class AddAction {
   constructor(scene) {
     this._scene = scene;
-    this._loader = new MeshManager();
     this._attachedMesh = null;
     this._observer = null;
   }
@@ -18,33 +17,16 @@ export class AddAction {
     this._observer = _addMeshPointerObserver(this._scene);
   }
 
-  loadMesh(url) {}
-
-  _addMeshLoader(url, scene) {
-    SceneLoader.ImportMesh('', url, null, scene, function (meshes) {
-      // do something with the scene
-    });
-  }
-
-  _addMeshPointerObserver(scene) {
+  _adttachMeshToPointerObserver(scene) {
     const pointerObserver = scene.onPointerObservable.add((pointerInfo) => {
-      if (pointerInfo.type == BABYLON.PointerEventTypes.POINTERDOWN) {
-        if (pointerInfo.pickInfo && pointerInfo.pickInfo.pickedMesh) {
-          let mesh = pointerInfo.pickInfo.pickedMesh;
-          if (!this._ignoredMeshes.includes(mesh)) {
-            if (mesh instanceof BABYLON.AbstractMesh) {
-              if (this._attachedMesh != mesh) {
-                this._actions.attachMesh(mesh);
-              }
-            } else {
-              this._actions.attachMesh(null);
-            }
-          } else {
-            this._actions.attachMesh(null);
-          }
-        } else {
-          this._actions.attachMesh(null);
-        }
+      if (pointerInfo.type == PointerEventTypes.POINTERMOVE) {
+        const screenPosition = new Vector3(scene.pointerX, scene.pointerY, 0.99);
+        const engine = scene.getEngine();
+        const vector = Vector3.Unproject(screenPosition, engine.getRenderWidth(), engine.getRenderHeight(), Matrix.Identity(), scene.getViewMatrix(), scene.getProjectionMatrix());
+        this._attachedMesh.position = vector;
+      }
+      if (pointerInfo.type == PointerEventTypes.POINTERDOWN) {
+        this.dispose();
       }
     });
 
@@ -52,6 +34,9 @@ export class AddAction {
   }
 
   dispose() {
+    if (this._observer) {
+      this._scene.onPointerObservable.remove(this._observer);
+    }
     this._attachedMesh = null;
   }
 }
