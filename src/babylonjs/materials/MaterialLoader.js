@@ -1,6 +1,7 @@
-import Registry from "./MaterialRegistry" assert { type: "json" };
+import Registry from "./MaterialRegistry";
+import { PBRMetallicRoughnessMaterial, Color3 } from "@babylonjs/core";
 
-export class MaterialLoader {
+export default class MaterialLoader {
   constructor() {
     this._scene = null;
   }
@@ -29,12 +30,18 @@ export class MaterialLoader {
     return material;
   }
 
-  _generateMaterial(name, metadata) {
+  _generateMaterial(name, data) {
     switch (data.type) {
       case "PBRMetallicRoughness":
         let material = new PBRMetallicRoughnessMaterial(name, this._scene);
         for (const key in data.settings) {
-          material[key] = data.settings[key];
+          switch (key) {
+            case "color":
+              material[key] = new Color3.FromHexString(data.settings[key]);
+              break;
+            default:
+              material[key] = data.settings[key];
+          }
         }
         break;
     }

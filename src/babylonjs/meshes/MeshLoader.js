@@ -1,7 +1,7 @@
 import { SceneLoader, MeshBuilder } from "@babylonjs/core";
-import Registry from "./MeshRegistry" assert { type: "json" };
+import Registry from "./MeshRegistry";
 
-export class MeshLoader {
+export default class MeshLoader {
   constructor(materialLoader) {
     this._scene = null;
     this._materialLoader = materialLoader;

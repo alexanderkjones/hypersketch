@@ -1,6 +1,6 @@
-import { CubeTexture } from '@babylonjs/core';
+import { CubeTexture } from "@babylonjs/core";
 
-export const addStandardEnvironment = (scene) => {
+export const standardEnvironment = (scene) => {
   // Our environment
   const environmentHelper = scene.createDefaultEnvironment({
     createSkybox: true,
@@ -12,10 +12,7 @@ export const addStandardEnvironment = (scene) => {
   });
 
   // HDRI environment texture
-  scene.environmentTexture = CubeTexture.CreateFromPrefilteredData(
-    './environment.env',
-    scene
-  );
+  scene.environmentTexture = CubeTexture.CreateFromPrefilteredData("./environment.env", scene);
 
   return environmentHelper;
 };

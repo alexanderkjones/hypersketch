@@ -1,15 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { Engine, Scene } from '@babylonjs/core';
+import { useEffect, useRef } from "react";
+import { Engine, Scene } from "@babylonjs/core";
 
-export default ({
-  antialias,
-  engineOptions,
-  adaptToDeviceRatio,
-  sceneOptions,
-  onRender,
-  onSceneReady,
-  ...rest
-}) => {
+export default ({ antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady, ...rest }) => {
   const reactCanvas = useRef(null);
 
   // set up basic engine and scene
@@ -18,15 +10,7 @@ export default ({
 
     if (!canvas) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 0.85;
-
-    const engine = new Engine(
-      canvas,
-      antialias,
-      { stencil: true },
-      adaptToDeviceRatio
-    );
+    const engine = new Engine(canvas, antialias, { stencil: true }, adaptToDeviceRatio);
 
     const scene = new Scene(engine, sceneOptions);
     if (scene.isReady()) {
@@ -36,7 +20,7 @@ export default ({
     }
 
     engine.runRenderLoop(() => {
-      if (typeof onRender === 'function') onRender(scene, engine);
+      if (typeof onRender === "function") onRender(scene, engine);
       scene.render();
     });
 
@@ -45,24 +29,17 @@ export default ({
     };
 
     if (window) {
-      window.addEventListener('resize', resize);
+      window.addEventListener("resize", resize);
     }
 
     return () => {
       scene.getEngine().dispose();
 
       if (window) {
-        window.removeEventListener('resize', resize);
+        window.removeEventListener("resize", resize);
       }
     };
-  }, [
-    antialias,
-    engineOptions,
-    adaptToDeviceRatio,
-    sceneOptions,
-    onRender,
-    onSceneReady,
-  ]);
+  }, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady]);
 
   return <canvas ref={reactCanvas} {...rest} />;
 };

@@ -1,5 +1,5 @@
-import MaterialLoader from "../../materials/MaterialLoader";
-import MeshLoader from "../../meshes/MeshLoader";
+import MaterialLoader from "babylonjs/materials/MaterialLoader";
+import MeshLoader from "babylonjs/meshes/MeshLoader";
 
 export class EditorLoaders {
   constructor() {
