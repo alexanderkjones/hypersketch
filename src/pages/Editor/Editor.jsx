@@ -1,12 +1,9 @@
+// MUI
 import Box from '@mui/material/Box';
 
-import EditorMenu from "./EditorMenu";
-import EditorBrowser from "./EditorBrowser";
-import EditorQuickToolbar from "./EditorQuickToolbar";
-import EditorStats from "./EditorStats";
-import EditorPartsLibrary from "./EditorPartsLibrary";
-
+// Components
 import Editor from "babylonjs/scenes/editor/Editor";
+import EditorUI from "./EditorUI/EditorUI"
 import SceneComponent from "components/babylon/SceneComponent";
 
 export default function EditorPage(props) {
@@ -22,12 +19,11 @@ export default function EditorPage(props) {
 
   return (
     <Box sx={{ height: "100%" }}>
-      <EditorMenu></EditorMenu>
-      <EditorQuickToolbar/>
-      <EditorStats/>
+    
       
+      <EditorUI />
       <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="viewport"></SceneComponent>
-      <EditorPartsLibrary />
+      
     </Box>
   );
 }

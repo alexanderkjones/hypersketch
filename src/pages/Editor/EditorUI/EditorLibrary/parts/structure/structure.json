@@ -1,0 +1,35 @@
+[
+  {
+    "title": "extrusion",
+    "parts": [
+      {
+        "id": "40x40_v-slot"
+      },
+      {
+        "id": "50x100_v-slot"
+      }
+    ]
+  },
+  {
+    "title": "plate",
+    "parts": [
+      {
+        "id": "6mm_plate"
+      },
+      {
+        "id": "12mm_plate"
+      }
+    ]
+  },
+  {
+    "title": "bar",
+    "parts": [
+      {
+        "id": "6mm_bar"
+      },
+      {
+        "id": "12mm_bar"
+      }
+    ]
+  }
+]
