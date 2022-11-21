@@ -20,7 +20,7 @@ export default ({ antialias, engineOptions, adaptToDeviceRatio, sceneOptions, on
     }
 
     engine.runRenderLoop(() => {
-      if (typeof onRender === "function") onRender(scene, engine);
+      if (typeof onRender === "function") onRender(scene);
       scene.render();
     });
 
