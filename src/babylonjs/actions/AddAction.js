@@ -1,6 +1,6 @@
 import { Vector3, Matrix, PointerEventTypes } from "@babylonjs/core";
 
-export class AddAction {
+export default class AddAction {
   constructor(scene) {
     this._scene = scene;
     this._attachedMesh = null;

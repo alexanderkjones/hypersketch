@@ -12,12 +12,28 @@ export default class Profiler {
     this.reset();
   }
 
-  attachScene(scene, offsets={indices:0, faces:0, meshes:0}) {
+  reset() {
+    this.state = {
+      fps: 0,
+      indices: 0,
+      faces: 0,
+      meshes: 0,
+    };
+    this.offsets = {
+      indices: 0,
+      faces: 0,
+      meshes: 0,
+    };
+  }
+
+  attachScene(scene, offsets = null) {
     this.reset();
     this.scene = scene;
     this.engine = scene.getEngine();
     this.updateable = true;
-    this.offsets = offsets;
+    if (offsets) {
+      this.offsets = offsets;
+    }
   }
 
   update() {
@@ -33,20 +49,6 @@ export default class Profiler {
   get() {
     this.update();
     return this.state;
-  }
-
-  reset() {
-    this.state = {
-      fps: 0,
-      indices: 0,
-      faces: 0,
-      meshes: 0,
-    };
-    this.offsets = {
-       indices: 0, 
-       faces: 0, 
-       meshes: 0 }
-    ;
   }
 
   dispose() {
