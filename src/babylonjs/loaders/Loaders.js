@@ -1,7 +1,7 @@
-import MaterialLoader from "babylonjs/materials/MaterialLoader";
-import MeshLoader from "babylonjs/meshes/MeshLoader";
+import MaterialLoader from "babylonjs/loaders/MaterialLoader";
+import MeshLoader from "babylonjs/loaders/MeshLoader";
 
-export class EditorLoaders {
+export default class Loaders {
   constructor() {
     this._scene = null;
     this._materialLoader = new MaterialLoader();
@@ -15,6 +15,6 @@ export class EditorLoaders {
   }
 
   loadMesh(toLoad) {
-    return this._meshLoader.loadMesh(toLoad);
+    return this._meshLoader.load(toLoad);
   }
 }

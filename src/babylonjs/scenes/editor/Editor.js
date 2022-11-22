@@ -1,4 +1,4 @@
-import { EditorLoaders } from "./loaders/EditorLoaders";
+import Loaders from "babylonjs/loaders/Loaders";
 // import {EditorActions} from './actions/EditorActions';
 // import {EditorInputs} from './inputs/EditorInputs';
 import { arcCamera } from "babylonjs/cameras/ArcCamera";
@@ -10,7 +10,7 @@ export default class Editor {
   constructor() {
     this.scene = null;
     this.profiler = new Profiler();
-    // this.loaders = new EditorLoaders();
+    this.loaders = new Loaders();
     // this.actions = new EditorActions(this.loaders);
     // this.input = new EditorInputs(this.actions);
   }
@@ -21,8 +21,13 @@ export default class Editor {
     this.grid = standardGrid(scene);
     this.environment = standardEnvironment(scene);
     this.profiler.attachScene(scene, { indices: -48, faces: 16, meshes: 4 });
-    // this.loaders.attachScene(scene);
+    this.loaders.attachScene(scene);
+    this.loaders.loadMesh("cube-aluminum-6061");
     // this.actions.attachScene(scene);
     // this.inputs.attachScene(scene);
+  }
+
+  setAction(action) {
+    this.actions.process(action);
   }
 }

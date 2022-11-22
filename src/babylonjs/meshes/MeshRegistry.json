@@ -1,4 +1,13 @@
 {
+  "cube-aluminum-6061": {
+    "id": "2xAGhZ",
+    "url": null,
+    "material": "aluminum-6061",
+    "create": {
+      "box": [0.1, 0.1, 0.1]
+    }
+  },
+
   "extrusion-vslot-40x40": {
     "id": "m8yE9k",
     "url": "./extrusions/vslot/extrusions-vslot-40x40.gbl",
