@@ -1,8 +1,8 @@
-import { PointerDragBehavior } from '@babylonjs/core';
+import { PointerDragBehavior } from "@babylonjs/core";
 
-export class GrabAction {
-  constructor(scene) {
-    this._scene = scene;
+export default class GrabAction {
+  constructor() {
+    this._scene = null;
     this._attachedMesh = null;
     this._grabBehavior = new PointerDragBehavior();
   }

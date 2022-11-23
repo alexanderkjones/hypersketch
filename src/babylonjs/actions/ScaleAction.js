@@ -1,8 +1,8 @@
-import { ScaleGizmo } from '@babylonjs/core';
+import { ScaleGizmo } from "@babylonjs/core";
 
 export class ScaleAction {
-  constructor(scene) {
-    this._scene = scene;
+  constructor() {
+    this._scene = null;
     this._attachedMesh = null;
     this._scaleGizmo = new ScaleGizmo();
   }
@@ -25,17 +25,17 @@ export class ScaleAction {
 
   axis(axis) {
     switch (axis) {
-      case 'x':
+      case "x":
         this.scaleGizmo.xGizmo.isEnabled(true);
         this.scaleGizmo.yGizmo.isEnabled(false);
         this.scaleGizmo.zGizmo.isEnabled(false);
         break;
-      case 'y':
+      case "y":
         this.scaleGizmo.xGizmo.isEnabled(false);
         this.scaleGizmo.yGizmo.isEnabled(true);
         this.scaleGizmo.zGizmo.isEnabled(false);
         break;
-      case 'z':
+      case "z":
         this.scaleGizmo.xGizmo.isEnabled(false);
         this.scaleGizmo.yGizmo.isEnabled(false);
         this.scaleGizmo.zGizmo.isEnabled(true);

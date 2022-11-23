@@ -39,8 +39,7 @@ export default class MaterialLoader {
           console.log(key);
           switch (key) {
             case "baseColor":
-              //material[key] = new Color3(1,1,1);
-              material[key] = new Color3.FromHexString("#ffffff");
+              material[key] = Color3.FromHexString(data.settings[key]);
               break;
             default:
               material[key] = data.settings[key];

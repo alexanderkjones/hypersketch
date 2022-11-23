@@ -1,8 +1,13 @@
 import { ArcRotateCamera, Vector3 } from "@babylonjs/core";
 
-export const arcCamera = (scene, distance=3) => {
+export const arcCamera = (scene, distance = 3) => {
   // This creates and positions an arc rotate camera
   var camera = new ArcRotateCamera("camera1", -Math.PI / 2, Math.PI / 2 - Math.PI / 10, distance, new Vector3(0, 0, 0));
+
+  // Clipping
+  camera.minZ = 0.1;
+
+  // Controls sensativity
   camera.panningSensibility = 100;
   camera.angularSensibilityX = 800;
   camera.angularSensibilityY = 800;

@@ -1,0 +1,29 @@
+{
+  "keyboardShortcuts": {
+    "add": {
+      "enter": {
+        "action": "add",
+        "argument": "complete",
+        "value": "true"
+      },
+      "esc": {
+        "action": "add",
+        "argument": "cancel",
+        "value": "true"
+      }
+    },
+
+    "default": {
+      "control+z": {
+        "action": "default",
+        "argument": "undo",
+        "value": "true"
+      },
+      "shift+control+z": {
+        "action": "default",
+        "argument": "redo",
+        "value": "true"
+      }
+    }
+  }
+}
