@@ -25,7 +25,10 @@ export default class KeyboardObserver {
           } else {
             this._keystrokes.key = key;
           }
-          this._processKeys();
+          const request = this._processKeys();
+          if (request) {
+            this._actions.actionRequest(request);
+          }
           break;
         case KeyboardEventTypes.KEYUP:
           if (key in this._keystrokes.modifiers) {
@@ -50,9 +53,7 @@ export default class KeyboardObserver {
       request = this._config.keyboardShortcuts.default[keys];
     }
 
-    if (request) {
-      this._actions.actionRequest(request);
-    }
+    return request;
   }
 
   _mergeKeys() {
