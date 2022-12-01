@@ -6,6 +6,9 @@ export default class LoadMeshCommand {
   }
 
   execute() {
+    this._store.set("meshToLoad", this.meshID);
+    
+    this.mesh = this._store.get("attachedScene").meshes
     this.mesh = this.loader.loadMesh(this.meshID);
   }
 

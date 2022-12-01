@@ -1,19 +1,26 @@
 import { KeyboardEventTypes } from "@babylonjs/core";
 
 export default class KeyboardObserver {
-  constructor(actions, config) {
+  constructor(config) {
+    this._store = null;
     this._scene = null;
-    this._actions = actions;
     this._config = config;
     this._keystrokes = { modifiers: { control: false, option: false, alt: false, shift: false, command: false, meta: false }, key: null };
     this._observer = null;
   }
 
-  attachScene(scene) {
-    if (this._observer) this._scene.onKeyboardObservable.remove(this._observer);
+  attachStore(store) {
+    this._store = store;
+    this._store.watch("attachedScene", this, this.onSetAttachedScene);
+  }
+
+  onSetAttachedScene = (scene) => {
+    if (this._observer) {
+      this._scene.onKeyboardObservable.remove(this._observer);
+    }
     this._scene = scene;
     this._observer = this._keyboardObserver(scene);
-  }
+  };
 
   _keyboardObserver(scene) {
     const keyboardObserver = scene.onKeyboardObservable.add((kbInfo) => {
@@ -27,7 +34,7 @@ export default class KeyboardObserver {
           }
           const request = this._processKeys();
           if (request) {
-            this._actions.actionRequest(request);
+            this._store.set("actionRequest", request);
           }
           break;
         case KeyboardEventTypes.KEYUP:
@@ -44,7 +51,7 @@ export default class KeyboardObserver {
 
   _processKeys() {
     const keys = this._mergeKeys();
-    const action = this._actions.getActionEnabled();
+    const action = this._store.get("actionEnabled");
 
     let request = null;
     if (action in this._config.keyboardShortcuts) {

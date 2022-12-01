@@ -3,32 +3,40 @@ import Registry from "babylonjs/materials/MaterialRegistry";
 
 export default class MaterialLoader {
   constructor() {
+    this._store = null;
     this._scene = null;
   }
 
-  attachScene(scene) {
-    this._scene = scene;
+  attachStore(store) {
+    this._store = store;
+    this._store.watch("attachedScene", this, this.onSetAttachedScene);
+    this._store.watch("materialToLoad", this, this.onSetMaterialToLoad);
   }
 
-  load(name) {
-    let data = Registry[name];
+  onSetAttachedScene = (scene) => {
+    this._scene = scene;
+  };
+
+  onSetMaterialToLoad = (props) => {
+    const { mesh, matName } = props;
+    let data = Registry[matName];
     if (!data) {
       return null;
     }
 
     let material = null;
     for (const loadedMaterial of this._scene.materials) {
-      if (loadedMaterial.name == name) {
+      if (loadedMaterial.name == matName) {
         material = loadedMaterial;
       }
     }
 
     if (!material) {
-      material = this._generateMaterial(name, data);
+      material = this._generateMaterial(matName, data);
     }
 
     return material;
-  }
+  };
 
   _generateMaterial(name, data) {
     let material = null;

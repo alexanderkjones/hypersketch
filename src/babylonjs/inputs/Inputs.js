@@ -2,14 +2,24 @@ import PointerObserver from "./PointerObserver";
 import KeyboardObserver from "./KeyboardObserver";
 
 export default class Inputs {
-  constructor(actions) {
-    this._actions = actions;
-    this.pointerObserver = new PointerObserver(actions);
-    this.keyboardObserver = new KeyboardObserver(actions);
+  constructor() {
+    this.register("pointerObserver", new PointerObserver());
+    this.register("keyboardObserver", new KeyboardObserver());
   }
 
-  attachScene(scene) {
-    this.pointerObserver.attachScene(scene);
-    this.keyboardObserver.attachScene(scene);
+  attachStore(store) {
+    for (const observer in this) {
+      if (typeof this[observer].attachStore === "function") {
+        this[observer].attachStore(store);
+      }
+    }
+  }
+
+  register(name, observer) {
+    this[name] = observer;
+  }
+
+  unregister(name) {
+    delete this[name];
   }
 }

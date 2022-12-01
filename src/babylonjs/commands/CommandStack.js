@@ -1,11 +1,19 @@
 export default class ComandStack {
   constructor() {
+    this._store = null;
     this._stack = [];
     this._stackUndo = [];
     this.maxStackSize = 20;
   }
 
-  execute(command) {
+  attachStore(store) {
+    this._store = store;
+    this._store.watch("executeCommand", this, this.onSetExecuteCommand);
+    this._store.watch("undoCommand", this, this.onSetUndoCommand);
+    this._store.watch("redoCommand", this, this.onSetRedoCommand);
+  }
+
+  onSetExecuteCommand = (command) => {
     command.execute();
     this._stack.push(command);
     this.limitStack(this._stack);

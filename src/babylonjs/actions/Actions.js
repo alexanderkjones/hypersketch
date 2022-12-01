@@ -8,14 +8,12 @@ import AddAction from "babylonjs/actions/AddAction";
 // import JointAction from "babylonjs/actions/JointAction";
 
 export default class Actions {
-  constructor(loader) {
+  constructor() {
+    this._store = null;
     this._scene = null;
-    this._loader = loader;
+    this._actionEnabled = null;
     this._attachedMesh = null;
     this.actions = {};
-    this.actionsEnabled = {};
-    this.actionsClasses = {};
-    this.commandStack = new CommandStack();
 
     this.registerAction("add", AddAction);
     // this.registerAction("grab", GrabAction);
@@ -25,7 +23,14 @@ export default class Actions {
     // this.registerAction("joint", JointAction);
   }
 
-  attachScene(scene) {
+  attachStore(store){
+    this._store = store;
+    this._store.watch("attachedScene", this, this.onSetAttachedScene);
+    this._store.watch("attachedMesh", this, this.onSetAttachedMesh);
+    this._store.watch("actionEnabled", this, this.onSetActionEnabled);
+  }
+
+  onSetAttachedScene(scene) {
     this._scene = scene;
     for (let key in this.actions) {
       let action = this.actions[key];
@@ -35,7 +40,7 @@ export default class Actions {
     }
   }
 
-  attachMesh(mesh) {
+  onSetAttachedMesh = (mesh) => {
     this._attachedMesh = mesh;
     for (let key in this.actions) {
       let action = this.actions[key];
@@ -45,11 +50,19 @@ export default class Actions {
     }
   }
 
-  registerAction(key, actionClass) {
-    this.actions[key] = null;
-    this.actionsEnabled[key] = false;
-    this.actionsClasses[key] = actionClass;
+  registerAction(key, class) {
+    const action = {};
+    action.class = class;
+    action.instance = null;
+    action.enabled = false;
+    this.actions[key] = action;
   }
+
+  // registerAction(key, actionClass) {
+  //   this.actions[key] = null;
+  //   this.actionsEnabled[key] = false;
+  //   this.actionsClasses[key] = actionClass;
+  // }
 
   actionsDisableAll() {
     for (let key in this.actions) {
@@ -61,37 +74,57 @@ export default class Actions {
     }
   }
 
-  actionEnabled(key, value) {
-    if (value) {
-      this.actionsDisableAll();
-      if (!this.actions[key]) {
-        let actionClass = this.actionsClasses[key];
-        this.actions[key] = new actionClass();
-        this.actions[key]._attachCommandStack(this._commandStack);
+  onSetActionEnabled = (props) => {
+    const {key, enabled} = props;
+    const action = this.actions[key];
+    if (enabled) {
+      if(!(action === this._actionEnabled)){
+        delete this._actionEnabled.instance;
+        this._actionEnabled = action;
       }
-      if (this._attachedScene) {
-        this.actions[key]._attachScene(this._attachedScene);
-      }
-      if (this._attachedMesh) {
-        this.actions[key]._attachMesh(this._attachedMesh);
+      if (!action.instance) {
+        action.instance = new action.class()
+        action.instance.setStore(this._store);
       }
     } else {
-      if (this.actions[key]) {
-        this.actions[key].dispose();
-      }
+      delete this._actionEnabled.instance;
     }
-    this.actionsEnabled[key] = value;
+    action.enabled = enabled;
   }
 
-  actionRequest(request) {
-    if (!request.action) {
+  // onSetActionEnabled = (props) => {
+  //   const {action, enabled} = props;
+  //   if (enabled) {
+  //     this.actionsDisableAll();
+  //     if (!this.actions[key]) {
+  //       let actionClass = this.actionsClasses[key];
+  //       this.actions[key] = new actionClass();
+  //       this.actions[key]._attachCommandStack(this._commandStack);
+  //     }
+  //     if (this._attachedScene) {
+  //       this.actions[key]._attachScene(this._attachedScene);
+  //     }
+  //     if (this._attachedMesh) {
+  //       this.actions[key]._attachMesh(this._attachedMesh);
+  //     }
+  //   } else {
+  //     if (this.actions[key]) {
+  //       this.actions[key].dispose();
+  //     }
+  //   }
+  //   this.actionsEnabled[key] = value;
+  // }
+
+  onSetActionRequest = (request) => {
+    const {action} = request;
+    if (!action) {
       throw new Error("actionRequest must contain a target action key");
     }
-    if (!(request.action in this.actions)) {
-      throw new Error(request.action + " is not a registered action");
+    if (!(action in this.actions)) {
+      throw new Error(action + " is not a registered action");
     }
-    if (!this.actionsEnabled[request.action]) {
-      throw new Error(request.action + " is not enabled, you must first enable this action using actionEnabled(actionName, bool)");
+    if (!this.actions[action].enabled) {
+      throw new Error(action + " is not enabled, you must first enable this action using actionEnabled(actionName, bool)");
     }
     if (!request.argument) {
       throw new Error("actionRequest must have an 'argument' property");
@@ -100,6 +133,6 @@ export default class Actions {
       throw new Error("actionRequest must have an 'value' property");
     }
 
-    this.actions[request.action].process(request);
+    this.actions[action].process(request);
   }
 }

@@ -3,30 +3,26 @@ import LoadMeshCommand from "babylonjs/commands/LoadMeshCommand";
 
 export default class AddAction {
   constructor() {
+    this._store = null;
     this._scene = null;
-    this._commandStack = null;
     this._attachedMesh = null;
     this._observer = null;
   }
 
-  attachScene(scene) {
+  attachStore(store) {
+    this._store = store;
+    this._store.watch("attachedScene", this, this.onSetAttachedScene);
+  }
+
+  onSetAttachedScene = (scene) => {
     this._scene = scene;
-    this._loader.attachScene(scene);
-  }
-
-  attachMesh(mesh) {
-    this._attachedMesh = mesh;
-    //this._observer = this._addMeshPointerObserver(this._scene);
-  }
-
-  attachCommandStack(stack) {
-    this._commandStack = stack;
-  }
+  };
 
   process(request) {
-    switch (request.argument) {
+    const { action, argument, value } = request;
+    switch (argument) {
       case "loadMesh":
-        this._commandStack.execute(new LoadMeshCommand(request.value, this._loader))
+        this._store.set("executeCommand", new LoadMeshCommand(value));
         break;
     }
   }

@@ -2,17 +2,23 @@ import { SceneLoader, MeshBuilder } from "@babylonjs/core";
 import Registry from "babylonjs/meshes/MeshRegistry";
 
 export default class MeshLoader {
-  constructor(materialLoader) {
+  constructor() {
+    this._store = null;
     this._scene = null;
-    this._materialLoader = materialLoader;
   }
 
-  attachScene(scene) {
+  attachStore(store) {
+    this._store = store;
+    this._store.watch("attachedScene", this, this.onSetAttachedScene);
+    this._store.watch("meshToLoad", this, this.onSetMeshToLoad);
+  }
+
+  onSetAttachedScene = (scene) => {
     this._scene = scene;
-  }
+  };
 
-  load(toLoad) {
-    let data = Registry[toLoad];
+  onSetMeshToLoad(meshName) {
+    let data = Registry[meshName];
 
     if (!data) {
       return null;
@@ -22,7 +28,8 @@ export default class MeshLoader {
     if (data.url) {
       SceneLoader.ImportMesh("", data.url, null, this._scene, function (meshes) {
         mesh = meshes[0];
-        mesh.material = this._materialLoader.load(data.material);
+        this._store.set("materialToLoad", { mesh: mesh, material: data.material });
+        //mesh.material = this._materialLoader.load(data.material);
       });
     } else if (data.create) {
       let type = Object.keys(data.create)[0];
@@ -30,7 +37,8 @@ export default class MeshLoader {
         case "box":
           let dimensions = data.create[type];
           mesh = MeshBuilder.CreateBox(toLoad, { height: dimensions[0], width: dimensions[1], depth: dimensions[2] }, this._scene);
-          mesh.material = this._materialLoader.load(data.material);
+          this._store.set("materialToLoad", { mesh: mesh, material: data.material });
+          //mesh.material = this._materialLoader.load(data.material);
           break;
       }
     } else {

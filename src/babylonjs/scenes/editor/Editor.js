@@ -12,10 +12,16 @@ import { standardEnvironment } from "babylonjs/environments/StandardEnvironment"
 export default class Editor {
   constructor() {
     this.scene = null;
+    this.store = new Store();
     this.profiler = new Profiler();
     this.loaders = new Loaders();
-    this.actions = new Actions(this.loaders);
-    this.inputs = new Inputs(this.actions);
+    this.actions = new Actions();
+    this.inputs = new Inputs();
+  }
+
+  attachStore(store) {
+    this.inputs.attachStore(store);
+    this.loaders.attachStore(store);
   }
 
   attachScene(scene) {

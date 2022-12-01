@@ -3,18 +3,23 @@ import MeshLoader from "babylonjs/loaders/MeshLoader";
 
 export default class Loaders {
   constructor() {
-    this._scene = null;
-    this._materialLoader = new MaterialLoader();
-    this._meshLoader = new MeshLoader(this._materialLoader);
+    this.register("materialLoader", new MaterialLoader());
+    this.register("meshLoader", new MeshLoader());
   }
 
-  attachScene(scene) {
-    this._scene = scene;
-    this._materialLoader.attachScene(scene);
-    this._meshLoader.attachScene(scene);
+  attachStore(store) {
+    for (const loader in this) {
+      if (typeof this[loader].attachStore === "function") {
+        this[loader].attachStore(store);
+      }
+    }
   }
 
-  loadMesh(toLoad) {
-    return this._meshLoader.load(toLoad);
+  register(name, object) {
+    this[name] = object;
+  }
+
+  unregister(name) {
+    delete this[name];
   }
 }
