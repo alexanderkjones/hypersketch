@@ -1,4 +1,4 @@
-export default class Store {
+class Store {
   constructor() {
     this._store = {};
     this._observers = {};
@@ -15,11 +15,19 @@ export default class Store {
   }
 
   get(key) {
-    return this._store[key];
+    if (key in this._store) {
+      return this._store[key];
+    } else {
+      return null;
+    }
   }
 
   watch(key, id, callback) {
+    if (!(key in this._observers)) {
+      this._observers[key] = [];
+    }
     this._observers[key].push({ id: id, callback: callback });
+    callback(this.get(key));
   }
 
   unwatch(key, id) {
@@ -36,3 +44,5 @@ export default class Store {
     }
   }
 }
+
+export const store = new Store();

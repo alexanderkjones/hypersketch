@@ -1,12 +1,9 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import Store from "../Store";
+import { store } from "../Store";
 
 describe("Store Functionality", () => {
-  let store = null;
-
   describe("Basic Functionality", () => {
     it("should initialize", () => {
-      store = new Store();
       expect(store).toHaveProperty("_store", {});
       expect(store).toHaveProperty("_observers", {});
     });
@@ -47,6 +44,7 @@ describe("Store Functionality", () => {
       store.watch("test", watcher, watcher.setValue);
       expect(store).toHaveProperty("_store", { test: 123 });
       expect(store._observers).toHaveProperty("test");
+      expect(watcher.value).toBe(123);
     });
 
     it("should notify", () => {

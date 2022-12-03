@@ -1,10 +1,9 @@
 import KeyboardObserver from "../KeyboardObserver";
 import Config from "../../scenes/editor/config";
-import Store from "../../store/Store";
+import { store } from "../../globals";
 import { describe, expect, it, beforeEach } from "vitest";
 
 describe("KeyboardObserver Functionality", () => {
-  const store = new Store();
   const keyboardObserver = new KeyboardObserver(Config);
   keyboardObserver.attachStore(store);
 

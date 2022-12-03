@@ -1,42 +1,38 @@
 import { PBRMetallicRoughnessMaterial, Color3 } from "@babylonjs/core";
+import { store } from "babylonjs/gloabls";
 import Registry from "babylonjs/materials/MaterialRegistry";
 
-export default class MaterialLoader {
+class MaterialLoader {
   constructor() {
-    this._store = null;
     this._scene = null;
+    this._watchStore();
   }
 
-  attachStore(store) {
-    this._store = store;
-    this._store.watch("attachedScene", this, this.onSetAttachedScene);
-    this._store.watch("materialToLoad", this, this.onSetMaterialToLoad);
+  _watchStore() {
+    store.watch("attachedScene", this, (scene) => {
+      this._scene = scene;
+    });
   }
 
-  onSetAttachedScene = (scene) => {
-    this._scene = scene;
-  };
-
-  onSetMaterialToLoad = (props) => {
-    const { mesh, matName } = props;
-    let data = Registry[matName];
+  load(materialRegistyId) {
+    let data = Registry[materialRegistyId];
     if (!data) {
       return null;
     }
 
     let material = null;
     for (const loadedMaterial of this._scene.materials) {
-      if (loadedMaterial.name == matName) {
+      if (loadedMaterial.name == materialRegistyId) {
         material = loadedMaterial;
       }
     }
 
     if (!material) {
-      material = this._generateMaterial(matName, data);
+      material = this._generateMaterial(materialRegistyId, data);
     }
 
     return material;
-  };
+  }
 
   _generateMaterial(name, data) {
     let material = null;
@@ -59,3 +55,5 @@ export default class MaterialLoader {
     return material;
   }
 }
+
+export const materialLoader = new MaterialLoader();

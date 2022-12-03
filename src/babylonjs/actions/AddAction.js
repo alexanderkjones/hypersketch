@@ -1,30 +1,51 @@
 import { Vector3, Matrix, PointerEventTypes } from "@babylonjs/core";
 import LoadMeshCommand from "babylonjs/commands/LoadMeshCommand";
+import { store, stack } from "babylonjs/globals";
 
 export default class AddAction {
-  constructor() {
-    this._store = null;
-    this._scene = null;
-    this._attachedMesh = null;
-    this._observer = null;
-  }
-
-  attachStore(store) {
-    this._store = store;
-    this._store.watch("attachedScene", this, this.onSetAttachedScene);
-  }
-
-  onSetAttachedScene = (scene) => {
+  constructor(scene) {
     this._scene = scene;
-  };
+    this._observer = null;
+    this._attachedMesh = null;
+    this._initialMeshState = null;
+    this._finalMeshSetate = null;
+    this._watchStore();
+  }
+
+  _watchStore() {
+    store.watch("attachedScene", this, (scene) => {
+      this._scene = scene;
+    });
+  }
 
   process(request) {
-    const { action, argument, value } = request;
+    const { action, argument, value, options } = request;
     switch (argument) {
       case "loadMesh":
-        this._store.set("executeCommand", new LoadMeshCommand(value));
+        this._attachedMesh = this._stack.execute(new LoadMeshCommand(value, this._scene));
+        if (options && options.attachMeshToPointer) {
+          this._initialMeshState = {
+            position: this._attachedMesh.position,
+            rotation: this._attachedMesh.rotation,
+            scale: this._attachedMesh.scale,
+          };
+          this._attachMeshToPointer(this._attachedMesh);
+        }
+        break;
+      case "cancel":
+
         break;
     }
+  }
+
+  _placeMesh() {
+    this._finalMeshState = {
+      position: this._attachedMesh.position,
+      rotation: this._attachedMesh.rotation,
+      scale: this._attachedMesh.scale,
+    };
+    stack.extend(new TransformMeshCommand(this._attachedMesh, this._initialMeshState, this._finalMeshState));
+    this.dispose();
   }
 
   // _adttachMeshToPointerObserver(scene) {
@@ -36,6 +57,7 @@ export default class AddAction {
   //       this._attachedMesh.position = vector;
   //     }
   //     if (pointerInfo.type == PointerEventTypes.POINTERDOWN) {
+  //        this._placeMesh();
   //       this.dispose();
   //     }
   //   });
@@ -44,9 +66,11 @@ export default class AddAction {
   // }
 
   dispose() {
+    this._attachedMesh = null;
+    this._initialMeshState = null;
+    this._finalMeshState = null;
     if (this._observer) {
       this._scene.onPointerObservable.remove(this._observer);
     }
-    this._attachedMesh = null;
   }
 }
