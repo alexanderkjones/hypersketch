@@ -7,14 +7,6 @@ export default class Inputs {
     this.register("keyboardObserver", new KeyboardObserver());
   }
 
-  attachStore(store) {
-    for (const observer in this) {
-      if (typeof this[observer].attachStore === "function") {
-        this[observer].attachStore(store);
-      }
-    }
-  }
-
   register(name, observer) {
     this[name] = observer;
   }
