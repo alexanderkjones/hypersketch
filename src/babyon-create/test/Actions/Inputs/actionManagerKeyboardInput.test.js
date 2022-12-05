@@ -4,25 +4,20 @@ import { store } from "../../../src/Globals";
 import { describe, expect, it, beforeEach } from "vitest";
 
 describe("KeyboardObserver Functionality", () => {
-  console.log("hello", ActionManagerKeyboardInput)
-  const keyboardObserver = new ActionManagerKeyboardInput();
-
-  it("should have a config file", () => {
-    expect(keyboardObserver._config).toEqual(Config);
-  });
+  console.log("hello", ActionManagerKeyboardInput);
+  const keyboardObserver = new ActionManagerKeyboardInput(actionManagerConfig.keyboardMapping);
 
   describe("_processKeys functionality", () => {
     beforeEach(() => {
       keyboardObserver._clearKeys();
     });
 
-    it("should return an add actionRequest", () => {
-      store.set("actionEnabled", "add");
-      keyboardObserver._keystrokes.key = "enter";
+    it("should return a move actionRequest", () => {
+      keyboardObserver._keystrokes.key = "m";
       const result = keyboardObserver._processKeys();
       expect(result).toMatchObject({
-        action: "add",
-        argument: "complete",
+        action: "move",
+        argument: "enabled",
         value: "true",
       });
     });
@@ -33,8 +28,8 @@ describe("KeyboardObserver Functionality", () => {
       keyboardObserver._keystrokes.key = "z";
       const result = keyboardObserver._processKeys();
       expect(result).toMatchObject({
-        action: "default",
-        argument: "undo",
+        action: "undo",
+        argument: "enabled",
         value: "true",
       });
     });

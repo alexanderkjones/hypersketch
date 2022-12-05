@@ -1,7 +1,7 @@
 import { PointerEventTypes, AbstractMesh } from "@babylonjs/core";
 import { store } from "../../Globals";
 
-export class AttachedMeshPointerObserver {
+export class ActionManagerPointersInput {
   constructor() {
     this._scene = null;
     this._lockAttachedMesh = null;
