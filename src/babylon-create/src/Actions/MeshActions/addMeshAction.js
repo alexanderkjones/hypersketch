@@ -2,14 +2,13 @@ import { Vector3, Matrix, PointerEventTypes } from "@babylonjs/core";
 import { LoadMeshCommand } from "../../Commands/MeshCommands";
 import { store, stack } from "../../Globals";
 
-export default class AddMeshAction {
+export class AddMeshAction {
   constructor() {
-    this.name = "addMesh";
     this._scene = null;
     this._observer = null;
     this._attachedMesh = null;
     this._initialMeshState = null;
-    this._finalMeshSetate = null;
+    this._finalMeshState = null;
     this._watchStore();
   }
 
@@ -20,6 +19,7 @@ export default class AddMeshAction {
   }
 
   process(request) {
+    console.log(request);
     const { action, argument, value, options } = request;
     switch (argument) {
       case "loadMesh":
@@ -44,7 +44,7 @@ export default class AddMeshAction {
       rotation: this._attachedMesh.rotation,
       scale: this._attachedMesh.scale,
     };
-    stack.extend(new TransformMeshCommand(this._attachedMesh, this._initialMeshState, this._finalMeshState));
+    //stack.extend(new TransformMeshCommand(this._attachedMesh, this._initialMeshState, this._finalMeshState));
     this.dispose();
   }
 

@@ -5,10 +5,10 @@ class Stack {
     this.maxStackSize = 20;
   }
   execute(command) {
+    let result = null;
     if (!command.executed) {
-      const result = command.execute();
+      result = command.execute();
     }
-
     this._stack.push(command);
     this.limitStack(this._stack);
     return result;

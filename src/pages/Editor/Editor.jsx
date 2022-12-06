@@ -6,12 +6,12 @@ import { setSceneProfile } from "slices/SceneProfileSlice";
 import Box from "@mui/material/Box";
 
 // Components
-import Editor from "babylonjs/scenes/editor/Editor";
+import { EditorApplication } from "babylon-create/src/Applications/";
 import EditorUI from "./EditorUI/EditorUI";
 import SceneComponent from "components/babylon/SceneComponent";
 
 export default function EditorPage(props) {
-  const editor = new Editor();
+  const editor = new EditorApplication();
   const dispatch = useDispatch();
 
   const onSceneReady = (scene) => {
@@ -25,7 +25,7 @@ export default function EditorPage(props) {
 
   return (
     <Box sx={{ height: "100%" }}>
-      <EditorUI setEditorAction={editor.setAction}/>
+      <EditorUI setEditorAction={editor.setAction} />
       <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="viewport"></SceneComponent>
     </Box>
   );

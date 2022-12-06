@@ -31,7 +31,7 @@ class MeshLoader {
       switch (type) {
         case "box":
           const dimensions = data.create[type];
-          mesh = MeshBuilder.CreateBox(toLoad, { height: dimensions[0], width: dimensions[1], depth: dimensions[2] }, this._scene);
+          mesh = MeshBuilder.CreateBox(meshRegistryId, { height: dimensions[0], width: dimensions[1], depth: dimensions[2] }, this._scene);
           this._store.set("materialToLoad", { mesh: mesh, material: data.material });
           //mesh.material = this._materialLoader.load(data.material);
           break;

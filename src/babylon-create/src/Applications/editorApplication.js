@@ -4,6 +4,7 @@ import { ActionManager } from "../Actions";
 import { DefaultArcRotateCamera } from "../Cameras";
 import { DefaultGrid } from "../Grids";
 import { DefaultEnvironment } from "../Environments";
+import { ArcRotateCamera, Vector3 } from "@babylonjs/core";
 
 export class EditorApplication {
   constructor() {
@@ -14,14 +15,15 @@ export class EditorApplication {
 
   attachScene(scene) {
     this.scene = scene;
-    store.set("attachedScene", scene);
+    this.profiler.attachScene(scene);
     this.grid = new DefaultGrid(scene);
     this.camera = new DefaultArcRotateCamera(scene);
     this.environment = new DefaultEnvironment(scene);
+    store.set("attachedScene", scene);
   }
 
   set(request) {
-    if (action in request) {
+    if (request.action) {
       store.set("actionRequest", request);
     }
   }

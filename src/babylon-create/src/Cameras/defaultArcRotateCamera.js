@@ -15,14 +15,13 @@ export class DefaultArcRotateCamera extends ArcRotateCamera {
 
     // Get canvas from scene
     const canvas = scene.getEngine().getRenderingCanvas();
-
     // Attaches camera canvas
     this.attachControl(canvas, true);
 
     // Monitors camera attachment
-    store.set("attachCameraControl", true);
-    store.watch("attachCameraControl", this, (value) => {
-      this.attachControl(canvas, value);
-    });
+    // store.set("attachCameraControl", true);
+    // store.watch("attachCameraControl", this, (value) => {
+    //   this.attachControl(canvas, value);
+    // });
   }
 }

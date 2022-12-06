@@ -2,13 +2,13 @@ import { meshLoader } from "../../Loaders";
 export class LoadMeshCommand {
   constructor(meshRegistryId, executed = false) {
     this.mesh = null;
-    this.meshRegistryId = meshId;
+    this.meshRegistryId = meshRegistryId;
     this.executed = executed;
   }
 
   execute() {
     if (!this.executed) {
-      this.mesh = meshLoader.load(meshRegistryId);
+      this.mesh = meshLoader.load(this.meshRegistryId);
       this.executed = true;
     }
   }

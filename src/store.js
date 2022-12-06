@@ -6,6 +6,6 @@ import sceneProfileReducer from "./slices/SceneProfileSlice";
 export default configureStore({
   reducer: {
     frameRate: frameRateReducer,
-    sceneProfile: sceneProfileReducer,
+    sceneProfile: sceneProfileReducer
   },
 });

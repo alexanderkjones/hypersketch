@@ -2,7 +2,7 @@ import { MeshBuilder, Color3 } from "@babylonjs/core";
 import { GridMaterial } from "@babylonjs/materials";
 import { store } from "../Globals";
 
-export class DefualtGrid {
+export class DefaultGrid {
   constructor(scene, width = 10, height = 10) {
     // Material for our grid
     const gridMaterial = new GridMaterial("groundMaterial", scene);
@@ -14,6 +14,7 @@ export class DefualtGrid {
 
     // Our built-in 'ground' shape.
     this.grid = MeshBuilder.CreateGround("ground", { width: width, height: height }, scene);
+    this.grid.isPickable = false;
     this.grid.material = gridMaterial;
 
     // Monitor grid visibility

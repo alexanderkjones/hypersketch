@@ -12,6 +12,10 @@ export class DefaultEnvironment {
       groundSize: 200,
     });
 
+    // Make environment unpickable
+    this.environmentHelper.ground.isPickable = false;
+    this.environmentHelper.skybox.isPickable = false;
+
     // HDRI environment texture
     scene.environmentTexture = CubeTexture.CreateFromPrefilteredData("./environment.env", scene);
   }

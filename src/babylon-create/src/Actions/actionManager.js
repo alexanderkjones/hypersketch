@@ -24,7 +24,7 @@ export class ActionManager {
   _registerActions() {
     for (const key in MeshActions) {
       const Action = MeshActions[key];
-      this.register(Action.name, Action);
+      this.registerAction(Action.name, Action);
     }
   }
 

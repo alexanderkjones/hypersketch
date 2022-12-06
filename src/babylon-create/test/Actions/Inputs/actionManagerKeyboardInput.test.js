@@ -4,7 +4,6 @@ import { store } from "../../../src/Globals";
 import { describe, expect, it, beforeEach } from "vitest";
 
 describe("KeyboardObserver Functionality", () => {
-  console.log("hello", ActionManagerKeyboardInput);
   const keyboardObserver = new ActionManagerKeyboardInput(actionManagerConfig.keyboardMapping);
 
   describe("_processKeys functionality", () => {

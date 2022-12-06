@@ -32,21 +32,17 @@ export class ActionManagerPointersInput {
           return;
         }
         if (!(pointerInfo.pickInfo && pointerInfo.pickInfo.pickedMesh)) {
-          this._store.set("attachedMesh", null);
-          return;
-        }
-        if (this._ignoredMeshes.includes(pointerInfo.pickInfo.pickedMesh)) {
-          this._store.set("attachedMesh", null);
+          store.set("attachedMesh", null);
           return;
         }
         if (!(pointerInfo.pickInfo.pickedMesh instanceof AbstractMesh)) {
-          this._store.set("attachedMesh", null);
+          store.set("attachedMesh", null);
           return;
         }
         if (pointerInfo.pickInfo.pickedMesh == this._attachedMesh) {
           return;
         }
-        this._store.set("attachedMesh", pointerInfo.pickInfo.pickedMesh);
+        store.set("attachedMesh", pointerInfo.pickInfo.pickedMesh);
       }
     });
 
