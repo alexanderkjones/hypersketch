@@ -54,8 +54,4 @@ describe("AddMeshAction Functionality", () => {
       expect(meshID).toBe(scene.meshes[0].name);
     });
   });
-
-  describe("AddMeshAction Base Case", () => {
-    
-  });
 });

@@ -41,26 +41,12 @@ describe("MoveMeshAction Functionality", () => {
     });
 
     it("should process set command and move attachedMesh", () => {
-      const request = { action: "moveMesh", argument: "set", value: [0, 10, 0] };
+      const [newX, newY, newZ] = [Math.random(), Math.random(), Math.random()];
+      const request = { action: "moveMesh", argument: "set", value: [newX, newY, newZ] };
       moveMeshAction.process(request);
-      expect(mesh.position.y).toBe(10);
+      expect(mesh.position.x).toBe(newX);
+      expect(mesh.position.y).toBe(newY);
+      expect(mesh.position.z).toBe(newZ);
     });
-
-    // it("should load a mesh", () => {
-    //   addMeshAction.process(actionRequest);
-    //   expect(1).toBe(scene.meshes.length);
-    //   expect(meshID).toBe(scene.meshes[0].name);
-    // });
-
-    // it("should undo", () => {
-    //   stack.undo();
-    //   expect(0).toBe(scene.meshes.length);
-    // });
-
-    // it("should redo", () => {
-    //   stack.redo();
-    //   expect(1).toBe(scene.meshes.length);
-    //   expect(meshID).toBe(scene.meshes[0].name);
-    // });
   });
 });

@@ -31,7 +31,11 @@ export class ActionManagerKeyboardInput {
       switch (kbInfo.type) {
         case KeyboardEventTypes.KEYDOWN:
           if (key in this._keystrokes.modifiers) {
-            this._keystrokes.modifiers[key] = true;
+            if (key == "meta") {
+              this._keystrokes.modifiers["control"] = true;
+            } else {
+              this._keystrokes.modifiers[key] = true;
+            }
           } else {
             this._keystrokes.key = key;
           }

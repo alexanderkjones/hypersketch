@@ -1,22 +1,22 @@
 export const actionManagerConfig = {
   keyboardMapping: {
     g: {
-      action: "grab",
+      action: "grabMesh",
       argument: "enabled",
       value: "true",
     },
     m: {
-      action: "move",
+      action: "moveMesh",
       argument: "enabled",
       value: "true",
     },
     s: {
-      action: "scale",
+      action: "scaleMesh",
       argument: "enabled",
       value: "true",
     },
     r: {
-      action: "rotate",
+      action: "rotateMesh",
       argument: "enabled",
       value: "true",
     },
@@ -27,6 +27,11 @@ export const actionManagerConfig = {
     },
     j: {
       action: "joint",
+      argument: "enabled",
+      value: "true",
+    },
+    "control+c": {
+      action: "cloneMesh",
       argument: "enabled",
       value: "true",
     },
