@@ -1,17 +1,21 @@
 import { PointerDragBehavior } from "@babylonjs/core";
 
-export default class GrabAction {
+export class GrabMeshAction {
   constructor() {
     this._scene = null;
     this._attachedMesh = null;
     this._grabBehavior = new PointerDragBehavior();
+    this._watchStore();
   }
 
-  attachScene(scene) {
-    this._scene = scene;
+  _watchStore() {
+    store.watch("attachedScene", (scene) => {
+      this._scene = scene;
+    });
+    store.watch("attachedMesh", this._onSetAttachedMesh);
   }
 
-  attachMesh(mesh) {
+  _onSetAttachedMesh = (mesh) => {
     if (this._attachedMesh) {
       this._attachedMesh.removeBehavior(this._grabBehavior);
     }
@@ -21,7 +25,7 @@ export default class GrabAction {
     if (this._attachedMesh) {
       this._attachedMesh.addBehavior(this._grabBehavior);
     }
-  }
+  };
 
   dispose() {
     if (this._attachedMesh) {

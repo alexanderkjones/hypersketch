@@ -2,15 +2,17 @@ class Store {
   constructor() {
     this._store = {};
     this._observers = {};
+    this._debug = false;
   }
 
-  set(key, value) {
+  set(key, value, setter = null) {
     this._store[key] = value;
     if (!(key in this._observers)) {
-      this._observers[key] = [];
+      this._observers[key] = {};
     }
-    for (const observer of this._observers[key]) {
-      observer.callback(value);
+    for (const observer in this._observers[key]) {
+      const callback = this._observers[key][observer];
+      const result = callback(value);
     }
   }
 
@@ -22,19 +24,22 @@ class Store {
     }
   }
 
-  watch(key, id, callback) {
+  watch(key, object, callback) {
+    const objectName = object.constructor.name;
     if (!(key in this._observers)) {
-      this._observers[key] = [];
+      this._observers[key] = {};
     }
-    this._observers[key].push({ id: id, callback: callback });
+    if (this._observers[key][objectName]) {
+      return { error: "cannot register watcher multiple times" };
+    }
+    this._observers[key][objectName] = callback;
     callback(this.get(key));
   }
 
-  unwatch(key, id) {
-    for (let i = 0; i < this._observers[key].length; i++) {
-      if (this._observers[key][i].id === id) {
-        this._observers[key].splice(i, 1);
-      }
+  unwatch(key, object) {
+    const objectName = object.constructor.name;
+    if (this._observers[key][objectName]) {
+      delete this._observers[key][objectName];
     }
   }
 

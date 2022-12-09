@@ -18,6 +18,7 @@ class MeshLoader {
   load(meshRegistryId) {
     let data = Registry[meshRegistryId];
     if (!data) {
+      console.log("mesh not found in registry");
       return null;
     }
     let mesh = null;
@@ -30,10 +31,10 @@ class MeshLoader {
       const type = Object.keys(data.create)[0];
       switch (type) {
         case "box":
-          const dimensions = data.create[type];
-          mesh = MeshBuilder.CreateBox(meshRegistryId, { height: dimensions[0], width: dimensions[1], depth: dimensions[2] }, this._scene);
-          this._store.set("materialToLoad", { mesh: mesh, material: data.material });
-          //mesh.material = this._materialLoader.load(data.material);
+          const [height, width, depth] = data.create[type];
+          mesh = MeshBuilder.CreateBox(meshRegistryId, { height: height, width: width, depth: depth }, this._scene);
+          mesh.position.y += height / 2;
+          mesh.material = materialLoader.load(data.material);
           break;
       }
     } else {

@@ -1,9 +1,18 @@
 [
   {
+    "title": "basic_shapes",
+    "parts": [
+      {
+        "id": "cube-aluminum-6061",
+        "img": "https://m.media-amazon.com/images/I/51Kxtyk+cbL.jpg"
+      }
+    ]
+  },
+  {
     "title": "extrusion",
     "parts": [
       {
-        "id": "40x40_v-slot",
+        "id": "extrusion-vslot-40x40",
         "img": "https://m.media-amazon.com/images/I/51Kxtyk+cbL.jpg"
       }
     ]

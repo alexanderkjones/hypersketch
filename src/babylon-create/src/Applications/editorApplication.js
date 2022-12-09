@@ -24,7 +24,7 @@ export class EditorApplication {
 
   set(request) {
     if (request.action) {
-      store.set("actionRequest", request);
+      store.set("actionRequest", request, "editor");
     }
   }
 }

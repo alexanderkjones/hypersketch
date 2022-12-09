@@ -2,7 +2,7 @@ import { ArcRotateCamera, Vector3 } from "@babylonjs/core";
 import { store } from "../Globals";
 
 export class DefaultArcRotateCamera extends ArcRotateCamera {
-  constructor(scene, distance = 3) {
+  constructor(scene, distance = 1) {
     super("camera", -Math.PI / 2, Math.PI / 2 - Math.PI / 10, distance, new Vector3(0, 0, 0));
 
     // Clipping

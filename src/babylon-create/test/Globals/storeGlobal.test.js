@@ -30,11 +30,16 @@ describe("Store Functionality", () => {
     class Watcher {
       constructor() {
         this.value = null;
+        this.otherValue = null;
       }
 
       setValue = (value) => {
         this.value = value;
       };
+
+      setOtherValue = (value) => {
+        this.otherValue = value;
+      }
     }
 
     const watcher = new Watcher();
@@ -45,6 +50,11 @@ describe("Store Functionality", () => {
       expect(store).toHaveProperty("_store", { test: 123 });
       expect(store._observers).toHaveProperty("test");
       expect(watcher.value).toBe(123);
+    });
+
+    it("should only watch once", () => {
+      const result =  store.watch("test", watcher, watcher.setValue);
+      expect(result).haveOwnProperty("error");
     });
 
     it("should notify", () => {

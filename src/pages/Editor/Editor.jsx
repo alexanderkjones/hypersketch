@@ -25,7 +25,7 @@ export default function EditorPage(props) {
 
   return (
     <Box sx={{ height: "100%" }}>
-      <EditorUI setEditorAction={editor.setAction} />
+      <EditorUI setEditorRequest={editor.set} />
       <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="viewport"></SceneComponent>
     </Box>
   );

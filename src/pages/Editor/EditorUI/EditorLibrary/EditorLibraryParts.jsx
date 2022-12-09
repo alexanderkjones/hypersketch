@@ -32,20 +32,20 @@ export default function EditorParts(props) {
   const sx = {
     CardRow: {
       display: "flex",
-    }
-  }
+    },
+  };
   return (
     <Box>
       {catalog.map((list) => (
-        <Box >
-          <Typography variant="h5" textTransform="capitalize">{list.title}</Typography>
+        <Box>
+          <Typography variant="h5" textTransform="capitalize">
+            {list.title}
+          </Typography>
           <Divider />
-          <Box sx={{display:"flex"}}>
-            {
-              list.parts.map((part) => (
-                <Part data={part} onSelected={onSelected} />
-              ))
-            }
+          <Box sx={{ display: "flex" }}>
+            {list.parts.map((part) => (
+              <Part data={part} onSelected={onSelected} />
+            ))}
           </Box>
         </Box>
       ))}
@@ -54,24 +54,25 @@ export default function EditorParts(props) {
 }
 
 function Part(props) {
-  const { data, onSelected} = props;
+  const { data, onSelected } = props;
 
   const handleClick = (value) => {
-    console.log("click")
-    console.log(value);
     onSelected(value);
   };
 
   const partName = data.id.replace("_", " ");
 
   return (
-    <Card  sx={{ maxWidth: "150px", mt: "20px", mb:"20px", mr:"20px"}}>
-      <CardActionArea onClick={()=>handleClick(data.id)}>
-        <Box sx={{p:"10px"}}>
-        <CardMedia component="img" height="100" width="100" image={data.img} alt={partName} />
-        <CardContent>
-          <Typography variant="body2" align="center" textTransform="capitalize"> {partName} </Typography>
-        </CardContent>
+    <Card sx={{ maxWidth: "150px", mt: "20px", mb: "20px", mr: "20px" }}>
+      <CardActionArea onClick={() => handleClick(data.id)}>
+        <Box sx={{ p: "10px" }}>
+          <CardMedia component="img" height="100" width="100" image={data.img} alt={partName} />
+          <CardContent>
+            <Typography variant="body2" align="center" textTransform="capitalize">
+              {" "}
+              {partName}{" "}
+            </Typography>
+          </CardContent>
         </Box>
       </CardActionArea>
     </Card>

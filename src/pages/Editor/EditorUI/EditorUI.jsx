@@ -13,11 +13,13 @@ export default function EditorUI(props) {
   const [openLibrary, setOpenLibrary] = useState(false);
   const [toolbarValue, setToolbarValue] = useState(null);
 
+  const { setEditorRequest } = props;
+
   return (
     <Box>
       <EditorMenu />
-      <EditorLibrary openLibrary={openLibrary} setOpenLibrary={setOpenLibrary} setToolbarValue={setToolbarValue} />
-      <EditorQuickToolbar toolbarValue={toolbarValue} setToolbarValue={setToolbarValue} setOpenLibrary={setOpenLibrary} />
+      <EditorLibrary openLibrary={openLibrary} setOpenLibrary={setOpenLibrary} setToolbarValue={setToolbarValue} setEditorRequest={setEditorRequest} />
+      <EditorQuickToolbar toolbarValue={toolbarValue} setToolbarValue={setToolbarValue} setOpenLibrary={setOpenLibrary} setEditorRequest={setEditorRequest} />
       <EditorStats />
     </Box>
   );

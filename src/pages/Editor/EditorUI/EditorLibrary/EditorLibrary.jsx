@@ -14,7 +14,7 @@ import Tab from "@mui/material/Tab";
 import LibraryParts from "./EditorLibraryParts";
 
 export default function EditorLibrary(props) {
-  const { openLibrary, setOpenLibrary, setToolbarValue } = props;
+  const { openLibrary, setOpenLibrary, setToolbarValue, setEditorRequest } = props;
   const [selectedTab, setSelectedTab] = useState("quickstart")
   const [contentRoute, setContentRoute] = useState("quickstart");
 
@@ -25,6 +25,7 @@ export default function EditorLibrary(props) {
 
   const onSelected = (value) => {
     // set command here from part
+    setEditorRequest({action:"addMesh", argument:"enabled", value: value});
     handleClose();
   };
 

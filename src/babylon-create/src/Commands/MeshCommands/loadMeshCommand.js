@@ -11,6 +11,7 @@ export class LoadMeshCommand {
       this.mesh = meshLoader.load(this.meshRegistryId);
       this.executed = true;
     }
+    return this.mesh;
   }
 
   undo() {

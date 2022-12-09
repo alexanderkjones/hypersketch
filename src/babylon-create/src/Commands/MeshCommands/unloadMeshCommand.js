@@ -8,25 +8,23 @@ export class UnloadMeshCommand {
       metadata: { ...mesh.metadata },
       position: mesh.position.clone(),
       rotation: mesh.rotation.clone(),
-      scale: mesh.scale.clone(),
+      scaling: mesh.scaling.clone(),
     };
     this.executed = executed;
   }
 
   execute() {
-    if (this.executed) {
-      return;
-    }
-    this._store.set("meshToUnload", this.mesh);
+    if (this.executed) return;
+    meshLoader.unload(this.mesh);
     this.executed = true;
   }
 
   undo() {
-    this._store.set("meshToLoad", this.restore.name);
-    this.mesh = this._store.get("loadedMesh");
-    this.mesh.position = this.restore.position;
-    this.mesh.rotation = this.restore.rotation;
-    this.mesh.scale = this.restore.scale;
+    this.mesh = meshLoader.load(this.restore.name);
+    this.mesh.metadata = { ...this.restore.metadata };
+    this.mesh.position = this.restore.position.clone();
+    this.mesh.rotation = this.restore.rotation.clone();
+    this.mesh.scaling = this.restore.scaling.clone();
     this.executed = false;
   }
 }

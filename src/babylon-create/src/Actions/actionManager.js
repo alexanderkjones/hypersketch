@@ -24,7 +24,9 @@ export class ActionManager {
   _registerActions() {
     for (const key in MeshActions) {
       const Action = MeshActions[key];
-      this.registerAction(Action.name, Action);
+      const actionNameString = Action.name;
+      const name = Action.name[0].toLowerCase() + Action.name.slice(1, Action.name.lastIndexOf("Action"));
+      this.registerAction(name, Action);
     }
   }
 
@@ -34,43 +36,53 @@ export class ActionManager {
   }
 
   _actionEnabled(key, enabled) {
-    const action = this.actions[key];
+    const action = this._actions[key];
     if (enabled) {
-      if (!(key == this._enabled)) {
-        this.actions[this._enabled].instance.dispose();
-        delete this.actions[this._enabled].instance;
+      if (this._enabled && key != this._enabled) {
+        if (this._actions[this._enabled].instance) {
+          this._actions[this._enabled].instance.dispose();
+          delete this._actions[this._enabled].instance;
+        }
       }
       if (!action.instance) {
         action.instance = new action._class();
       }
       this._enabled = key;
-      store.set("actionEnabled", key);
+      store.set("actionEnabled", key, "actionManager");
     } else {
-      delete this.actions[this._enabled].instance;
+      delete this._actions[this._enabled].instance;
       this._enabled = null;
-      store.set("actionEnabled", key);
+      store.set("actionEnabled", key, "actionManager");
     }
     action.enabled = enabled;
   }
 
   _onSetActionRequest = (request) => {
+    console.log(request);
     if (!request) {
       return;
     }
+
     const { action, argument, value } = request;
     if (!action) {
       throw new Error("actionRequest must contain a target action key");
     }
-    if (!(action in this.actions)) {
+
+    if (!(action in this._actions)) {
       throw new Error(action + " is not a registered action");
     }
+
     if (!argument) {
       throw new Error("actionRequest must have an 'argument' property");
     }
+
     if (!value) {
       throw new Error("actionRequest must have an 'value' property");
     }
+
     this._actionEnabled(action, true);
-    this.actions[action].process(request);
+    if (this._actions[action].instance.process) {
+      this._actions[action].instance.process(request);
+    }
   };
 }

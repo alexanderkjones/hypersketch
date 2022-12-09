@@ -40,7 +40,6 @@ class MaterialLoader {
       case "PBRMetallicRoughness":
         material = new PBRMetallicRoughnessMaterial(name, this._scene);
         for (const key in data.settings) {
-          console.log(key);
           switch (key) {
             case "baseColor":
               material[key] = Color3.FromHexString(data.settings[key]);

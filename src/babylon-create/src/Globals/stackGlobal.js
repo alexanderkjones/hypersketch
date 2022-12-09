@@ -32,6 +32,11 @@ class Stack {
     this.execute(command);
   }
 
+  clear() {
+    this._stack = [];
+    this._stackUndo = [];
+  }
+
   limitStack(stack) {
     if (stack.length > this.maxStackSize) {
       stack.shift();

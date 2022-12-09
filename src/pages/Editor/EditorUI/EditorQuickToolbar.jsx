@@ -20,13 +20,23 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 
 export default function EditorQuickToolbar(props) {
-  const { toolbarValue, setToolbarValue, setOpenLibrary } = props;
+  const { toolbarValue, setToolbarValue, setOpenLibrary, setEditorRequest } = props;
 
   const handleChange = (event, newValue) => {
     setToolbarValue(newValue);
-    if(newValue == "library"){
-      console.log('setting open library');
-      setOpenLibrary(true);
+    switch (newValue) {
+      case "move":
+        setEditorRequest({ action: "moveMesh", argument: "enabled", value: true });
+        break;
+      case "rotate":
+        setEditorRequest({ action: "rotateMesh", argument: "enabled", value: true });
+        break;
+      case "scale":
+        setEditorRequest({ action: "scaleMesh", argument: "enabled", value: true });
+        break;
+      case "library":
+        setOpenLibrary(true);
+        break;
     }
   };
 
