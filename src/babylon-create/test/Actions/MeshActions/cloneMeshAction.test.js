@@ -48,9 +48,10 @@ describe("CloneMeshAction Functionality", () => {
     });
 
     it("should clone a second mesh", () => {
-      const mesh = stack.execute(new LoadMeshCommand(meshID));
-      store.set("attachedMesh", mesh);
       cloneMeshAction.process(actionRequest);
+      scene.meshes.map((mesh) => {
+        console.log(mesh.name);
+      });
       expect(3).toBe(scene.meshes.length);
       expect(meshID).toBe(scene.meshes[0].name);
       expect(meshID).toBe(scene.meshes[1].name);
@@ -66,7 +67,7 @@ describe("CloneMeshAction Functionality", () => {
     it("should redo", () => {
       stack.redo();
       stack.redo();
-      expect(2).toBe(scene.meshes.length);
+      expect(3).toBe(scene.meshes.length);
       expect(meshID).toBe(scene.meshes[0].name);
     });
   });

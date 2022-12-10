@@ -34,5 +34,6 @@ export class AddMeshAction {
     if (this._observer) {
       this._scene.onPointerObservable.remove(this._observer);
     }
+    store.unwatch(this);
   }
 }

@@ -1,5 +1,5 @@
 import { Vector3, Matrix, PointerEventTypes } from "@babylonjs/core";
-import { LoadMeshCommand } from "../../Commands/MeshCommands";
+import { CloneMeshCommand } from "../../Commands/MeshCommands";
 import { store, stack } from "../../Globals";
 
 export class CloneMeshAction {
@@ -19,11 +19,12 @@ export class CloneMeshAction {
   }
 
   process(request) {
+    console.log("cloneMesh", this._attachedMesh);
     if (!this._attachedMesh) return;
     const { action, argument, value, options } = request;
     switch (argument) {
       case "enabled":
-        store.set("attachedMesh", stack.execute(new LoadMeshCommand(this._attachedMesh.name)));
+        store.set("attachedMesh", stack.execute(new CloneMeshCommand(this._attachedMesh)));
         store.set("actionRequest", { action: "moveMesh", argument: "enabled", value: true });
         break;
     }
@@ -31,5 +32,6 @@ export class CloneMeshAction {
 
   dispose() {
     this._attachedMesh = null;
+    store.unwatch(this);
   }
 }

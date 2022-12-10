@@ -29,5 +29,6 @@ export class DeleteMeshAction {
   dispose() {
     this._scene = null;
     this._attachedMesh = null;
+    store.unwatch(this);
   }
 }

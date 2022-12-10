@@ -30,6 +30,16 @@ export const actionManagerConfig = {
       argument: "enabled",
       value: "true",
     },
+    delete: {
+      action: "deleteMesh",
+      argument: "enabled",
+      value: "true",
+    },
+    backspace: {
+      action: "deleteMesh",
+      argument: "enabled",
+      value: "true",
+    },
     "control+c": {
       action: "cloneMesh",
       argument: "enabled",

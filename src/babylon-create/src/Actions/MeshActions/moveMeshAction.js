@@ -5,6 +5,7 @@ import { PositionGizmo } from "@babylonjs/core/Gizmos";
 
 export class MoveMeshAction {
   constructor() {
+    console.log("MoveMesh: initializing");
     this._attachedMesh = null;
     this._attachedMeshStart = null;
     this._attachedMeshEnd = null;
@@ -17,6 +18,7 @@ export class MoveMeshAction {
   }
 
   process(request) {
+    console.log("MoveMesh attachedMesh:", this._attachedMesh);
     if (!this._attachedMesh) return;
     const { action, argument, value, options } = request;
     switch (argument) {
@@ -84,12 +86,13 @@ export class MoveMeshAction {
   }
 
   dispose() {
-    this._attachedMesh = null;
-    this._setStart(null);
-    this._setEnd(null);
     if (this._gizmo) {
       this._gizmo.dispose();
       this._gizmo = null;
     }
+    this._attachedMesh = null;
+    this._setStart(null);
+    this._setEnd(null);
+    store.unwatch(this);
   }
 }

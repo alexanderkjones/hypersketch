@@ -58,6 +58,7 @@ export class ActionManagerKeyboardInput {
 
   _processKeys() {
     const keys = this._mergeKeys();
+    console.log(keys);
     if (this._mapping[keys]) {
       return this._mapping[keys];
     } else {

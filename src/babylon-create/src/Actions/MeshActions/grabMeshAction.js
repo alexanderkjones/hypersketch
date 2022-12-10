@@ -32,5 +32,6 @@ export class GrabMeshAction {
       this._attachedMesh.removeBehavior(this._grabBehavior);
     }
     this._attachedMesh = null;
+    store.unwatch(this);
   }
 }

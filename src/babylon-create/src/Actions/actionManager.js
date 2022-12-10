@@ -35,30 +35,35 @@ export class ActionManager {
     this._actions[key] = action;
   }
 
+  getActionEnabled() {
+    return this._actions[this._enabled];
+  }
+
   _actionEnabled(key, enabled) {
     const action = this._actions[key];
     if (enabled) {
-      if (this._enabled && key != this._enabled) {
-        if (this._actions[this._enabled].instance) {
-          this._actions[this._enabled].instance.dispose();
-          delete this._actions[this._enabled].instance;
-        }
+      if (key == this._enabled) return;
+      if (this._enabled) {
+        const oldAction = this._actions[this._enabled];
+        oldAction.instance.dispose();
+        delete oldAction.instance;
+        oldAction.enabled = false;
       }
       if (!action.instance) {
         action.instance = new action._class();
       }
       this._enabled = key;
-      store.set("actionEnabled", key, "actionManager");
+      //store.set("actionEnabled", key, "actionManager");
     } else {
-      delete this._actions[this._enabled].instance;
+      action.instance.dispose();
+      delete action.instance;
       this._enabled = null;
-      store.set("actionEnabled", key, "actionManager");
+      //store.set("actionEnabled", null, "actionManager");
     }
     action.enabled = enabled;
   }
 
   _onSetActionRequest = (request) => {
-    console.log(request);
     if (!request) {
       return;
     }
@@ -66,6 +71,16 @@ export class ActionManager {
     const { action, argument, value } = request;
     if (!action) {
       throw new Error("actionRequest must contain a target action key");
+    }
+
+    if (action == "undo") {
+      stack.undo();
+      return;
+    }
+
+    if (action == "redo") {
+      stack.redo();
+      return;
     }
 
     if (!(action in this._actions)) {

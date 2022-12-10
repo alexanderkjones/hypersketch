@@ -6,6 +6,7 @@ class Store {
   }
 
   set(key, value, setter = null) {
+    console.log("store: ", key, value);
     this._store[key] = value;
     if (!(key in this._observers)) {
       this._observers[key] = {};
@@ -30,7 +31,8 @@ class Store {
       this._observers[key] = {};
     }
     if (this._observers[key][objectName]) {
-      return { error: "cannot register watcher multiple times" };
+      //throw new Error("StoreError: watcher name " + objectName + "is already registered to key: " + key);
+      return;
     }
     this._observers[key][objectName] = callback;
     callback(this.get(key));
@@ -40,6 +42,15 @@ class Store {
     const objectName = object.constructor.name;
     if (this._observers[key][objectName]) {
       delete this._observers[key][objectName];
+    }
+  }
+
+  unwatch(object) {
+    const objectName = object.constructor.name;
+    for (const key in this._observers) {
+      if (this._observers[key][objectName]) {
+        delete this._observers[key][objectName];
+      }
     }
   }
 

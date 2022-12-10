@@ -84,12 +84,13 @@ export class RotateMeshAction {
   }
 
   dispose() {
-    this._attachedMesh = null;
-    this._setStart(null);
-    this._setEnd(null);
     if (this._gizmo) {
       this._gizmo.dispose();
       this._gizmo = null;
     }
+    this._attachedMesh = null;
+    this._setStart(null);
+    this._setEnd(null);
+    store.unwatch(this);
   }
 }

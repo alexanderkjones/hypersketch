@@ -27,7 +27,7 @@ export class Profiler {
     };
   }
 
-  attachScene(scene, offsets = { fps: 0, indices: 48, faces: 16, meshes: 4 }) {
+  attachScene(scene, offsets = { fps: 0, indices: 48, faces: 16, meshes: 3 }) {
     this.reset();
     this.scene = scene;
     this.engine = scene.getEngine();

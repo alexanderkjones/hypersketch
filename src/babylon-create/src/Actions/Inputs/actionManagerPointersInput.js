@@ -4,6 +4,7 @@ import { store } from "../../Globals";
 export class ActionManagerPointersInput {
   constructor() {
     this._scene = null;
+    this._attachedMesh = null;
     this._lockAttachedMesh = null;
     this._observer = null;
     this._watchStore();
@@ -11,6 +12,9 @@ export class ActionManagerPointersInput {
 
   _watchStore() {
     store.watch("attachedScene", this, this._onSetAttachedScene);
+    store.watch("attachedMesh", this, (mesh) => {
+      this._attachedMesh = mesh;
+    });
     store.watch("lockAttachedMesh", this, (value) => {
       this._lockAttachedMesh = value;
     });
