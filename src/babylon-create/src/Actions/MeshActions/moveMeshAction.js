@@ -42,6 +42,7 @@ export class MoveMeshAction {
     if (this._attachedMesh) {
       this._gizmo = new PositionGizmo();
       this._gizmo.updateGizmoRotationToMatchAttachedMesh = false;
+      this._gizmo.updateGizmoPositionToMatchAttachedMesh = true;
       this._gizmo.attachedMesh = this._attachedMesh;
 
       this._gizmo.onDragStartObservable.add(() => {
