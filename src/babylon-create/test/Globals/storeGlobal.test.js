@@ -16,8 +16,10 @@ describe("Store Functionality", () => {
     });
 
     it("should get a value", () => {
-      const myValue = store.get("test");
+      let myValue = store.get("test");
       expect(myValue).toBe(123);
+      myValue = store.get("test2");
+      expect(myValue).toBe(234);
     });
 
     it("should clear all values", () => {
@@ -39,7 +41,7 @@ describe("Store Functionality", () => {
 
       setOtherValue = (value) => {
         this.otherValue = value;
-      }
+      };
     }
 
     const watcher = new Watcher();
@@ -52,20 +54,41 @@ describe("Store Functionality", () => {
       expect(watcher.value).toBe(123);
     });
 
-    // it("should only watch once", () => {
-    //   const result =  store.watch("test", watcher, watcher.setValue);
-    //   expect(result).haveOwnProperty("error");
-    // });
+    it("should only watch once", () => {
+      const numberOfTestWatchers = store._observers["test"].length;
+      store.watch("test", watcher, watcher.setValue);
+      expect(store._observers["test"].length).toBe(numberOfTestWatchers);
+    });
 
     it("should notify", () => {
       store.set("test", 456);
       expect(watcher.value).toBe(456);
     });
 
-    it("should unwatch", () => {
+    it("should unwatch by topic", () => {
       store.unwatch("test", watcher);
       store.set("test", 123);
       expect(watcher.value).toBe(456);
+    });
+
+    it("should unwatch all", () => {
+      const numberOfWatchers = (item) => {
+        return Object.keys(store._observers[item]).length;
+      };
+
+      store.watch("a", watcher, watcher.setValue);
+      store.watch("b", watcher, watcher.setValue);
+      store.watch("c", watcher, watcher.setValue);
+
+      expect(numberOfWatchers("a")).toBe(1);
+      expect(numberOfWatchers("b")).toBe(1);
+      expect(numberOfWatchers("c")).toBe(1);
+
+      store.unwatchAll(watcher);
+
+      expect(numberOfWatchers("a")).toBe(0);
+      expect(numberOfWatchers("b")).toBe(0);
+      expect(numberOfWatchers("c")).toBe(0);
     });
   });
 });
