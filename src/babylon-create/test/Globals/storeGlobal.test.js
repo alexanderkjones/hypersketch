@@ -52,10 +52,10 @@ describe("Store Functionality", () => {
       expect(watcher.value).toBe(123);
     });
 
-    it("should only watch once", () => {
-      const result =  store.watch("test", watcher, watcher.setValue);
-      expect(result).haveOwnProperty("error");
-    });
+    // it("should only watch once", () => {
+    //   const result =  store.watch("test", watcher, watcher.setValue);
+    //   expect(result).haveOwnProperty("error");
+    // });
 
     it("should notify", () => {
       store.set("test", 456);

@@ -1,6 +1,7 @@
 import { TransformMeshCommand } from "../../Commands/MeshCommands";
 import { store, stack } from "../../Globals";
 import { Vector3 } from "@babylonjs/core";
+import { UtilityLayerRenderer } from "@babylonjs/core/Rendering/utilityLayerRenderer";
 import { RotationGizmo } from "@babylonjs/core/Gizmos";
 
 export class RotateMeshAction {
@@ -38,7 +39,7 @@ export class RotateMeshAction {
     if (this._gizmo) this._gizmo.dispose();
 
     if (this._attachedMesh) {
-      this._gizmo = new RotationGizmo();
+      this._gizmo = new RotationGizmo(UtilityLayerRenderer.DefaultUtilityLayer, 2);
       this._gizmo.updateGizmoRotationToMatchAttachedMesh = false;
       this._gizmo.updateGizmoPositionToMatchAttachedMesh = true;
       this._gizmo.attachedMesh = this._attachedMesh;

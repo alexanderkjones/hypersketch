@@ -1,6 +1,7 @@
 import { TransformMeshCommand } from "../../Commands/MeshCommands";
 import { store, stack } from "../../Globals";
 import { Vector3 } from "@babylonjs/core";
+import { UtilityLayerRenderer } from "@babylonjs/core/Rendering/utilityLayerRenderer";
 import { ScaleGizmo } from "@babylonjs/core/Gizmos";
 
 export class ScaleMeshAction {
@@ -39,7 +40,7 @@ export class ScaleMeshAction {
 
     if (this._attachedMesh) {
       this._gizmo = new ScaleGizmo();
-      this._gizmo.updateGizmoRotationToMatchAttachedMesh = false;
+      //this._gizmo.updateGizmoRotationToMatchAttachedMesh = false;
       this._gizmo.updateGizmoPositionToMatchAttachedMesh = true;
       this._gizmo.attachedMesh = this._attachedMesh;
 

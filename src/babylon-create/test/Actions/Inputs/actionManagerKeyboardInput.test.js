@@ -15,7 +15,7 @@ describe("KeyboardObserver Functionality", () => {
       keyboardObserver._keystrokes.key = "m";
       const result = keyboardObserver._processKeys();
       expect(result).toMatchObject({
-        action: "move",
+        action: "moveMesh",
         argument: "enabled",
         value: "true",
       });
