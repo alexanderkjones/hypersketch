@@ -54,13 +54,15 @@ describe("Mesh Helper functionality", () => {
       const faceGroups = meshHelper.getFaceGroups();
       let i = 0;
       for(const face of meshHelper.getFaces()){
-        console.log("face", i)
+        console.log("face:", i)
         for(const index of face.indices){
           console.log(meshHelper.getVertex(index))
         }
-        console.log(face.normal);
+        console.log(face.normal.asArray());
+        console.log("")
         i++;
       }
+      console.log("hello", faceGroups)
       expect(faceGroups.length).toBe(6);
     });
   });

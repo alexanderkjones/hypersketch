@@ -19,6 +19,7 @@ export class MeshHelper {
   }
 
   getVertex(index) {
+    index = this._indices[index];
     return [this._positions[index * 3], this._positions[index * 3 + 1], this._positions[index * 3 + 2]];
   }
 
@@ -67,7 +68,7 @@ export class MeshHelper {
 
     for (var i = 0; i < numberOfFaces; i++) {
       // Get indices
-      const indices = [i + 0, i + 1, i + 2];
+      const indices = [i * 3 + 0, i * 3 + 1, i * 3 + 2];
 
       // Get vertices
       const p1 = new Vector3(...this.getVertex(indices[0]));
