@@ -39,7 +39,11 @@ class Store {
   }
 
   unwatch(key, object) {
-    console.log("unwatching topic")
+    if (arguments.length == 1) {
+      this.unwatchAll(arguments[0]);
+      return;
+    }
+    console.log("unwatching topic", key, object);
     const objectName = object.constructor.name;
     if (this._observers[key][objectName]) {
       delete this._observers[key][objectName];
@@ -47,7 +51,7 @@ class Store {
   }
 
   unwatchAll(object) {
-    console.log("unwatching all")
+    console.log("unwatching all", object);
     const objectName = object.constructor.name;
     for (const key in this._observers) {
       if (this._observers[key][objectName]) {
