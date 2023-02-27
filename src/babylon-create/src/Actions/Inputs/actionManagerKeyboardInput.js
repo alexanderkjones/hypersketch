@@ -46,7 +46,11 @@ export class ActionManagerKeyboardInput {
           break;
         case KeyboardEventTypes.KEYUP:
           if (key in this._keystrokes.modifiers) {
-            this._keystrokes.modifiers[key] = false;
+            if (key == "meta") {
+              this._keystrokes.modifiers["control"] = null;
+            } else {
+              this._keystrokes.modifiers[key] = null;
+            }
           } else {
             this._keystrokes.key = null;
           }

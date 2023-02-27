@@ -51,7 +51,7 @@ class Store {
   }
 
   unwatchAll(object) {
-    console.log("unwatching all", object);
+    //console.log("unwatching all", object);
     const objectName = object.constructor.name;
     for (const key in this._observers) {
       if (this._observers[key][objectName]) {

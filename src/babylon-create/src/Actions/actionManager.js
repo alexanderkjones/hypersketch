@@ -42,6 +42,7 @@ export class ActionManager {
   _actionEnabled(key, enabled) {
     const action = this._actions[key];
     if (enabled) {
+      console.log("Enabling Action: ", key);
       if (key == this._enabled) return;
       if (this._enabled) {
         const oldAction = this._actions[this._enabled];
@@ -53,12 +54,10 @@ export class ActionManager {
         action.instance = new action._class();
       }
       this._enabled = key;
-      //store.set("actionEnabled", key, "actionManager");
     } else {
       action.instance.dispose();
       delete action.instance;
       this._enabled = null;
-      //store.set("actionEnabled", null, "actionManager");
     }
     action.enabled = enabled;
   }

@@ -1,15 +1,13 @@
 import { TransformMeshCommand } from "../../Commands/MeshCommands";
+import { TransformHelper } from "../../Helpers/";
 import { store, stack } from "../../Globals";
-import { Vector3 } from "@babylonjs/core";
-import {UtilityLayerRenderer } from "@babylonjs/core/Rendering/utilityLayerRenderer";
+import { UtilityLayerRenderer } from "@babylonjs/core/Rendering/utilityLayerRenderer";
 import { PositionGizmo } from "@babylonjs/core/Gizmos";
 
 export class MoveMeshAction {
   constructor() {
-    console.log("MoveMesh: initializing");
     this._attachedMesh = null;
-    this._attachedMeshStart = null;
-    this._attachedMeshEnd = null;
+    this._transform = new TransformHelper();
     this._gizmo = null;
     this._watchStore();
   }
@@ -19,7 +17,6 @@ export class MoveMeshAction {
   }
 
   process(request) {
-    console.log("MoveMesh attachedMesh:", this._attachedMesh);
     if (!this._attachedMesh) return;
     const { action, argument, value, options } = request;
     switch (argument) {
@@ -28,9 +25,8 @@ export class MoveMeshAction {
         break;
       case "set":
         if (!value) return;
-        const endState = this._getStateFromValue({ position: value });
-        this._setStart();
-        this._setEnd(endState);
+        this._transform.setStateInit();
+        this._transfrom.setStateEnd({ position: value });
         this._commit();
         break;
     }
@@ -47,44 +43,18 @@ export class MoveMeshAction {
       this._gizmo.attachedMesh = this._attachedMesh;
 
       this._gizmo.onDragStartObservable.add(() => {
-        this._setStart();
+        this._transform.setStateInit();
       });
 
       this._gizmo.onDragEndObservable.add(() => {
-        this._setEnd();
+        this._transform.setStateEnd();
         this._commit(true);
       });
     }
   };
 
-  _setStart(value) {
-    value ? (this._attachedMeshStart = value) : (this._attachedMeshStart = this._getState());
-  }
-
-  _setEnd(value) {
-    value ? (this._attachedMeshEnd = value) : (this._attachedMeshEnd = this._getState());
-  }
-
   _commit(executed) {
-    stack.execute(new TransformMeshCommand(this._attachedMesh, this._attachedMeshStart, this._attachedMeshEnd, executed));
-  }
-
-  _getStateFromValue(value) {
-    const state = this._getState();
-    for (const key in value) {
-      if (state[key]) state[key] = new Vector3(...value[key]);
-    }
-    return state;
-  }
-
-  _getState() {
-    if (!this._attachedMesh) return null;
-    const state = {
-      position: this._attachedMesh.position.clone(),
-      rotation: this._attachedMesh.rotation.clone(),
-      scaling: this._attachedMesh.scaling.clone(),
-    };
-    return state;
+    stack.execute(new TransformMeshCommand(this._attachedMesh, this._transform.getStateInit(), this._transform.getStateEnd(), executed));
   }
 
   dispose() {
@@ -93,8 +63,7 @@ export class MoveMeshAction {
       this._gizmo = null;
     }
     this._attachedMesh = null;
-    this._setStart(null);
-    this._setEnd(null);
+    this._transform.dispose();
     store.unwatch(this);
   }
 }
